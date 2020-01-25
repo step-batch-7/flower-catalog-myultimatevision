@@ -1,0 +1,27 @@
+h2 {
+  text-align: right;
+  margin-left: 10%;
+  margin-right: 10%;
+  padding-bottom: 10px;
+  padding-right: 100px;
+  border-bottom: 1px solid black;
+  color: rgb(250, 165, 54);
+}
+
+.main_pic {
+  margin-left: 10%;
+  height: 600px;
+}
+
+.gif {
+  margin-left: 50%;
+}
+
+.links {
+  margin-top: 5%;
+  margin-left: 7%;
+}
+
+.home {
+  display: flex;
+}
