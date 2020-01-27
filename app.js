@@ -2,7 +2,6 @@ const fs = require('fs');
 const CONTENT_TYPES = require('./lib/types');
 const Response = require('./lib/response');
 const { loadTemplate } = require('./lib/viewTemplate');
-const EXTRA_CHARS = require('./lib/symbols');
 
 const STATIC_FOLDER = `${__dirname}/public`;
 
@@ -22,21 +21,12 @@ const redirectToPage = function (file) {
   return res;
 }
 
-const replaceExtraChars = function (text, key) {
-  const pattern = new RegExp(key, '\g')
-  return text.replace(pattern, EXTRA_CHARS[key]);
-
-}
-
 const saveComment = function (req) {
   const filePath = './data/comments.json'
   const comments = loadComments();
   const { name, comment } = req.body;
-  const keys = Object.keys(EXTRA_CHARS);
-
-  const [newName, newComment] = [name, comment].map((text) => keys.reduce(replaceExtraChars, text));
   const date = new Date();
-  comments.unshift({ date, name: newName, comment: newComment });
+  comments.unshift({ date, name, comment });
   fs.writeFileSync(filePath, JSON.stringify(comments), 'utf8');
   return redirectToPage('/guest_book.html');
 }
@@ -72,8 +62,8 @@ const serveHomePage = (req) => {
 const generateHtml = function (html, commentDetails) {
   const commentHtml =
     `<div class= "comment">
-       <div class="name"><p>${commentDetails.name}</p></div>
-      <p>${commentDetails.date}</p>
+       <div class="userName"><p>${commentDetails.name}</p></div>
+      <p class="date">${commentDetails.date}</p>
       <p>${commentDetails.comment}</p>
      </div>`
   return html + commentHtml;
