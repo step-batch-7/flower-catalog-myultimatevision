@@ -1,0 +1,21 @@
+.about {
+  margin-left: 2%;
+  margin-top: 20%;
+  margin-right: 8%;
+}
+
+.home {
+  display: flex;
+}
+
+.flower {
+  height: 600px;
+}
+
+h2 {
+  text-align: center;
+  padding-bottom: 10px;
+  padding-right: 100px;
+  border-bottom: 1px solid black;
+  color: rgb(250, 165, 54);
+}
