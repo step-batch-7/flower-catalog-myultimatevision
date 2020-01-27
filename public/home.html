@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>flower Catalog</title>
+    <link rel="stylesheet" href="css/flower.css" />
+  </head>
+  <body>
+    <script>
+      const hideForSec = function () {
+  const image = document.getElementById('gif');
+  image.style.display = 'none';
+  setTimeout(() => image.style.display = "block", 1000)
+} 
+      </script>
+
+    <h1>Flower Catalog</h1>
+    <div class="home">
+      <div><img src="images/freshorigins.jpg" class="main_pic"/></div>
+      <div class="clickables">
+        <div class="links">
+          <li><a href="abeliophyllum.html">Abeliophyllum</a></li>
+          <li><a href="ageratum.html">Ageratum</a></li>
+        </div>
+        <div class="animated_flower">
+          <img id="gif" src="images/animated-flower-image-0021.gif" onclick="hideForSec()" />
+        </div>
+          <a href="guest_book.html">Guest book</a>
+    </div>
+  </body>
+</html>

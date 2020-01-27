@@ -3,8 +3,9 @@ body {
   margin-right: 10%;
 }
 
-h2 {
+h1 {
   text-align: right;
+  size: 60px;
   padding-bottom: 10px;
   border-bottom: 1px solid black;
   color: rgb(250, 165, 54);
@@ -14,7 +15,7 @@ h2 {
   height: 600px;
 }
 
-.gif {
+#gif {
   margin-left: 50%;
 }
 
@@ -29,4 +30,9 @@ h2 {
 .clickables {
   margin-top: 20%;
   margin-left: 3px;
+}
+
+.animated_flower {
+  height: 100px;
+  width: 100px;
 }
