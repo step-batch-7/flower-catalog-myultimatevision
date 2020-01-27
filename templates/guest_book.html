@@ -1,14 +1,24 @@
 <html>
   <head>
     <title>Guest book</title>
-    <link rel="stylesheet" href="css/flower.css" />
+    <link rel="stylesheet" href="css/linkedPages.css" />
   </head>
   <body>
-    <h1><a href="home.html"><<</a>Guest Book</h1>
+    <script>
+      const showComment = function() {
+        const body = document.querySelector("body");
+        const commentDetails = document.createElement("p");
+        const name = document.getElementsByTagName("input")[0].innerText;
+        const comment = document.getElementsByTagName("textArea")[0].innerText;
+        commentDetails.innerText = `${name}\n${comment}`;
+        body.appendChild(commentDetails);
+      };
+    </script>
+    <h2><a href="home.html"><<</a>Guest Book</h2>
     <form>
       <p>Name:<input type="text" name="name" required /></p>
-      <p>Comment:<input type="text" name="comment" required /></p>
-      <input type="submit" name="submit" required />
+      <p>Comment:<textarea type="text" name="comment" required></textarea></p>
+      <input type="submit" name="submit" onclick="showComment()" />
     </form>
   </body>
 </html>
