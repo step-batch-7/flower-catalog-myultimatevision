@@ -64,7 +64,6 @@ const generateHtml = function (html, commentDetails) {
     `<div class= "comment">
        <div class="name"><span>${commentDetails.name}<span></div>
       <span>${commentDetails.date}<span>
-      
       <span>${commentDetails.comment}<span>
      </div>`
   return html + commentHtml;

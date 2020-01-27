@@ -39,6 +39,24 @@ h2 {
   font-size: 25px;
 }
 
-.commentBox {
+.commentsBox {
   border-top: 1px solid black;
+}
+
+input {
+  width: 300px;
+  height: 20px;
+}
+
+textarea {
+  width: 300px;
+  height: 100px;
+}
+
+form {
+  margin-left: 100px;
+}
+
+button {
+  margin-left: 200px;
 }

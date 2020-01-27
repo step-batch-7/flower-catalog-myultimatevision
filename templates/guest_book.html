@@ -7,11 +7,13 @@
     <h2><a href="home.html"><<</a>Guest Book</h2>
     <h3>Leave a comment</h3>
     <form action="saveComment" method="POST">
-      <p>Name:<input type="text" name="name" required /></p>
+      <p>
+        Name:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="name" required />
+      </p>
       <p>Comment:<textarea type="text" name="comment" required></textarea></p>
-      <input type="submit" name="submit" />
+      <button>Submit</button>
     </form>
-    <div class="commentBox">
+    <div class="commentsBox">
       <h2>Comments</h2>
       __COMMENTS__
     </div>
