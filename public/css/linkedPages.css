@@ -19,3 +19,26 @@ h2 {
   border-bottom: 1px solid black;
   color: rgb(250, 165, 54);
 }
+
+.comment {
+  margin-left: 1000px;
+  height: 100px;
+  width: 300px;
+  margin: 25px;
+  display: block;
+  border-radius: 10px 10px 10px 5px;
+  background-color: whitesmoke;
+  font-size: 25px;
+}
+
+.name {
+  height: 30px;
+  width: 300px;
+  display: block;
+  background-color: gray;
+  font-size: 25px;
+}
+
+.commentBox {
+  border-top: 1px solid black;
+}

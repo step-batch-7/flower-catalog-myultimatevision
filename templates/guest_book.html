@@ -5,10 +5,15 @@
   </head>
   <body>
     <h2><a href="home.html"><<</a>Guest Book</h2>
-    <form>
+    <h3>Leave a comment</h3>
+    <form action="saveComment" method="POST">
       <p>Name:<input type="text" name="name" required /></p>
       <p>Comment:<textarea type="text" name="comment" required></textarea></p>
       <input type="submit" name="submit" />
     </form>
+    <div class="commentBox">
+      <h2>Comments</h2>
+      __COMMENTS__
+    </div>
   </body>
 </html>
