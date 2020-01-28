@@ -1,15 +1,9 @@
 const fs = require('fs');
+const querystring = require('querystring');
 const CONTENT_TYPES = require('./lib/types');
 const { loadTemplate } = require('./lib/viewTemplate');
 
 const STATIC_FOLDER = `${__dirname}/public`;
-
-const pickupParams = (query, keyValue) => {
-  const [key, value] = keyValue.split('=');
-  query[key] = value;
-  return query;
-};
-const readParams = keyValueTextPairs => keyValueTextPairs.split('&').reduce(pickupParams, {});
 
 const serveHomePage = function (req, res) {
   const html = fs.readFileSync(`${STATIC_FOLDER}/home.html`, 'utf8');
@@ -31,7 +25,7 @@ const serveStaticFile = (req, res) => {
 const loadComments = function () {
   const filePath = './data/comments.json';
   if (fs.existsSync(filePath)) {
-    return JSON.parse(fs.readFileSync(filePath, 'utf8') || []);
+    return JSON.parse(fs.readFileSync(filePath, 'utf8') || '[]');
   }
   return [];
 }
@@ -63,11 +57,9 @@ const saveComment = function (req, res) {
   req.on('data', (chunk) => data += chunk);
   req.on('end', () => {
     const date = new Date();
-    const { comment, name } = readParams(data);
-    const commentWithOutNewLines = decodeURIComponent(comment).replace(/\+/g, ' ')
-    const commentText = commentWithOutNewLines.replace(/\r\n/g, '<br />')
-    const nameText = decodeURIComponent(name).replace(/\+/g, ' ');
-    comments.unshift({ date, name: nameText, comment: commentText });
+    const { comment, name } = querystring.parse(data);
+    const commentText = comment.replace(/\r\n/g, '<br />')
+    comments.unshift({ date, name, comment: commentText });
     fs.writeFileSync(filePath, JSON.stringify(comments), 'utf8');
     res.setHeader('Content-Type', CONTENT_TYPES.html);
     res.setHeader('Location', '/guest_book.html');
