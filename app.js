@@ -16,7 +16,6 @@ const loadComments = function () {
 const redirectToPage = function (file) {
   const res = new Response();
   res.setHeader('Location', file);
-  res.setHeader('Content-Length', 0);
   res.setStatusCodeRedirect();
   return res;
 }
@@ -60,18 +59,23 @@ const serveHomePage = (req) => {
 }
 
 const generateHtml = function (html, commentDetails) {
+  const { name, date, comment } = commentDetails;
   const commentHtml =
-    `<div class= "comment">
-       <div class="userName"><p>${commentDetails.name}</p></div>
-      <p class="date">${commentDetails.date}</p>
-      <p>${commentDetails.comment}</p>
+    `<div class= "commentDetails">
+       <div class="userName">
+       <div><img class="icons" src="images/icn_username.png"/>${name}</div>
+       <div><img class="icons" src="images/icn_year.png"/>${new Date(date).toGMTString()}</div>
+       </div>
+       <div class="comment"><img class="icons" src="images/icn_email.png"/>${comment}</div>
      </div>`
   return html + commentHtml;
 }
 
 const generateComments = function () {
+  const noCommentsHtml = `<h3 style="color:gray;">No comments yet to show<h3>`
   const commentsDetails = loadComments();
-  return commentsDetails.reduce(generateHtml, '');
+  const commentHtml = commentsDetails.reduce(generateHtml, '');
+  return commentHtml || noCommentsHtml
 }
 
 

@@ -28,6 +28,7 @@ button {
 }
 p {
   margin: 10px;
+  font-size: 25px;
 }
 .about {
   margin-left: 2%;
@@ -40,24 +41,28 @@ p {
 .flower {
   height: 600px;
 }
-.comment {
-  width: 1000px;
-  margin: 25px;
+.commentDetails {
+  margin: 25px 0px 25px 0px;
   display: block;
   border-radius: 10px 0px;
   background-color: whitesmoke;
   font-size: 25px;
 }
 .userName {
-  height: 30px;
-  width: 1000px;
   display: block;
   background-color: rgb(209, 204, 204);
-  font-size: 25px;
+  font-size: 20px;
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
 }
 .commentsBox {
   border-top: 1px solid black;
 }
-.date {
-  text-align: right;
+.comment {
+  padding: 5px;
+}
+.icons {
+  height: 25px;
+  padding-right: 5px;
 }
