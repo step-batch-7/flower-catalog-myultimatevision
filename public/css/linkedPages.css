@@ -2,10 +2,9 @@ body {
   margin-left: 50px;
   margin-right: 20px;
 }
-h2 {
+h1 {
   text-align: center;
   padding-bottom: 10px;
-  padding-right: 100px;
   border-bottom: 1px solid black;
   color: rgb(250, 165, 54);
 }
@@ -30,16 +29,8 @@ p {
   margin: 10px;
   font-size: 25px;
 }
-.about {
-  margin-left: 2%;
-  margin-top: 20%;
-  margin-right: 8%;
-}
 .home {
   display: flex;
-}
-.flower {
-  height: 600px;
 }
 .commentDetails {
   margin: 25px 0px 25px 0px;
