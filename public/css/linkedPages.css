@@ -61,8 +61,10 @@ p {
 }
 .comment {
   padding: 5px;
+  display: flex;
+  justify-content: space-between;
 }
 .icons {
-  height: 25px;
+  height: 30px;
   padding-right: 5px;
 }

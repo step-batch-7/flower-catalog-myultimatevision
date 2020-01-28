@@ -8,7 +8,7 @@ const STATIC_FOLDER = `${__dirname}/public`;
 const loadComments = function () {
   const filePath = './data/comments.json';
   if (fs.existsSync(filePath)) {
-    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    return JSON.parse(fs.readFileSync(filePath, 'utf8') || []);
   }
   return [];
 }
@@ -67,7 +67,7 @@ const generateHtml = function (html, commentDetails) {
        <div><img class="icons" src="images/icn_username.png"/>${name}</div>
        <div><img class="icons" src="images/icn_year.png"/>${new Date(date).toGMTString()}</div>
        </div>
-       <div class="comment"><img class="icons" src="images/icn_email.png"/>${comment}</div>
+       <div class="comment">${comment}<img class="icons" src="images/icn_comment.png"/></div>
      </div>`
   return html + commentHtml;
 }
