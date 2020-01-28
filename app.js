@@ -24,6 +24,7 @@ const saveComment = function (req) {
   const filePath = './data/comments.json'
   const comments = loadComments();
   const { name, comment } = req.body;
+  console.log(comment);
   const date = new Date();
   comments.unshift({ date, name, comment });
   fs.writeFileSync(filePath, JSON.stringify(comments), 'utf8');
