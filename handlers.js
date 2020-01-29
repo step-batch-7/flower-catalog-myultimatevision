@@ -38,7 +38,8 @@ const generateHtml = function (html, commentDetails) {
        <div><img class="icons" src="images/icn_username.png"/>${name}</div>
        <div><img class="icons" src="images/icn_year.png"/>${new Date(date).toGMTString()}</div>
        </div>
-       <div class="comment">${comment}<img class="icons" src="images/icn_comment.png"/></div>
+       <div class="comment">${comment.replace(/\r\n/g, '<br />')}
+       <img class="icons" src="images/icn_comment.png"/></div>
      </div>`
   return html + commentHtml;
 }
@@ -58,8 +59,8 @@ const saveComment = function (req, res) {
   req.on('end', () => {
     const date = new Date();
     const { comment, name } = querystring.parse(data);
-    const commentText = comment.replace(/\r\n/g, '<br />')
-    comments.unshift({ date, name, comment: commentText });
+
+    comments.unshift({ date, name, comment });
     fs.writeFileSync(filePath, JSON.stringify(comments), 'utf8');
     res.setHeader('Content-Type', CONTENT_TYPES.html);
     res.setHeader('Location', '/guest_book.html');
