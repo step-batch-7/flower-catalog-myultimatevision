@@ -32,21 +32,6 @@ p {
 .home {
   display: flex;
 }
-.commentDetails {
-  margin: 25px 0px 25px 0px;
-  display: block;
-  border-radius: 10px 0px;
-  background-color: whitesmoke;
-  font-size: 25px;
-}
-.userName {
-  display: block;
-  background-color: rgb(209, 204, 204);
-  font-size: 20px;
-  padding: 5px;
-  display: flex;
-  justify-content: space-between;
-}
 .commentsBox {
   border-top: 1px solid black;
 }
@@ -55,7 +40,6 @@ p {
   display: flex;
   justify-content: space-between;
 }
-.icons {
-  height: 30px;
-  padding-right: 5px;
+.commentsTable {
+  width: 100%;
 }

@@ -33,14 +33,11 @@ const loadComments = function () {
 const generateHtml = function (html, commentDetails) {
   const { name, date, comment } = commentDetails;
   const commentHtml =
-    `<div class= "commentDetails">
-       <div class="userName">
-       <div><img class="icons" src="images/icn_username.png"/>${name}</div>
-       <div><img class="icons" src="images/icn_year.png"/>${new Date(date).toGMTString()}</div>
-       </div>
-       <div class="comment">${comment.replace(/\r\n/g, '<br />')}
-       <img class="icons" src="images/icn_comment.png"/></div>
-     </div>`
+    `<tr >
+       <td>${new Date(date).toGMTString()}</td>
+       <td>${name}</td>
+       <td>${comment.replace(/\r\n/g, '<br />')}</td> 
+     </tr>`
   return html + commentHtml;
 }
 
@@ -59,7 +56,6 @@ const saveComment = function (req, res) {
   req.on('end', () => {
     const date = new Date();
     const { comment, name } = querystring.parse(data);
-
     comments.unshift({ date, name, comment });
     fs.writeFileSync(filePath, JSON.stringify(comments), 'utf8');
     res.setHeader('Content-Type', CONTENT_TYPES.html);
