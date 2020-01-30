@@ -1,107 +1,32 @@
-const fs = require('fs');
-const CONTENT_TYPES = require('./lib/types');
-const Response = require('./lib/response');
-const { loadTemplate } = require('./lib/viewTemplate');
-
-const STATIC_FOLDER = `${__dirname}/public`;
-
-const loadComments = function () {
-  const filePath = './data/comments.json';
-  if (fs.existsSync(filePath)) {
-    return JSON.parse(fs.readFileSync(filePath, 'utf8') || []);
+class App {
+  constructor() {
+    this.routes = [];
   }
-  return [];
+  get(path, handler) {
+    this.routes.push({ path, handler, method: 'GET' })
+  }
+  post(path, handler) {
+    this.routes.push({ path, handler, method: 'POST' })
+  }
+  use(middleware) {
+    this.routes.push({ handler: middleware })
+  }
+  serve(req, res) {
+    console.log('Request: ', req.url, req.method);
+    const matchingHandlers = this.routes.filter((route) => matchRoute(route, req));
+    const next = function () {
+      if (matchingHandlers.length === 0) return;
+      const router = matchingHandlers.shift();
+      router.handler(req, res, next);
+    };
+    next();
+  }
 }
 
-const redirectToPage = function (file) {
-  const res = new Response();
-  res.setHeader('Location', file);
-  res.setStatusCodeRedirect();
-  return res;
+const matchRoute = function (route, req) {
+  if (route.method)
+    return req.method == route.method && req.url.match(route.path);
+  return true;
 }
 
-const saveComment = function (req) {
-  const filePath = './data/comments.json'
-  const comments = loadComments();
-  const { name, comment } = req.body;
-  console.log(comment);
-  const date = new Date();
-  comments.unshift({ date, name, comment });
-  fs.writeFileSync(filePath, JSON.stringify(comments), 'utf8');
-  return redirectToPage('/guest_book.html');
-}
-
-const serveStaticFile = (req) => {
-  const path = `${STATIC_FOLDER}${req.url}`;
-  const stat = fs.existsSync(path) && fs.statSync(path);
-  if (!stat || !stat.isFile()) return new Response();
-  const [, extension] = path.match(/.*\.(.*)$/) || [];
-  const contentType = CONTENT_TYPES[extension];
-  const html = fs.readFileSync(path);
-  const res = new Response();
-
-  res.setHeader('Content-Type', contentType);
-  res.setHeader('Content-Length', html.length);
-  res.setStatusCodeOk();
-  res.setBody(html);
-  return res;
-}
-
-
-const serveHomePage = (req) => {
-  const html = fs.readFileSync(`${STATIC_FOLDER}/home.html`, 'utf8');
-  const res = new Response();
-  if (!req.headers['Cookie']) res.setHeader('Set-Cookie', `sessionId=${new Date().getTime()}`);
-  res.setHeader('Content-Type', CONTENT_TYPES.html);
-  res.setHeader('Content-Length', html.length);
-  res.setStatusCodeOk();
-  res.setBody(html);
-  return res;
-}
-
-const generateHtml = function (html, commentDetails) {
-  const { name, date, comment } = commentDetails;
-  const commentHtml =
-    `<div class= "commentDetails">
-       <div class="userName">
-       <div><img class="icons" src="images/icn_username.png"/>${name}</div>
-       <div><img class="icons" src="images/icn_year.png"/>${new Date(date).toGMTString()}</div>
-       </div>
-       <div class="comment">${comment}<img class="icons" src="images/icn_comment.png"/></div>
-     </div>`
-  return html + commentHtml;
-}
-
-const generateComments = function () {
-  const noCommentsHtml = `<h3 style="color:gray;">No comments yet to show<h3>`
-  const commentsDetails = loadComments();
-  const commentHtml = commentsDetails.reduce(generateHtml, '');
-  return commentHtml || noCommentsHtml
-}
-
-
-const serveGuestBook = function (req) {
-  const comments = generateComments();
-  const html = loadTemplate('/guest_book.html', { COMMENTS: comments });
-  const res = new Response();
-  res.setHeader('content-Type', CONTENT_TYPES.html);
-  res.setHeader('content-Length', html.length);
-  res.setStatusCodeOk();
-  res.setBody(html);
-  return res;
-}
-
-const findHandler = (req) => {
-  if (req.method === 'GET' && req.url === '/') return serveHomePage;
-  if (req.method === 'POST' && req.url === '/saveComment') return saveComment;
-  if (req.method === 'GET' && req.url === '/guest_book.html') return serveGuestBook;
-  if (req.method === 'GET') return serveStaticFile;
-  return () => new Response();
-}
-
-const processRequest = function (req) {
-  const handler = findHandler(req);
-  return handler(req);
-}
-
-module.exports = { processRequest };
+module.exports = { App };

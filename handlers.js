@@ -1,20 +1,19 @@
 const fs = require('fs');
 const querystring = require('querystring');
+const { App } = require('./app');
 const CONTENT_TYPES = require('./lib/types');
 const { loadTemplate } = require('./lib/viewTemplate');
 
 const STATIC_FOLDER = `${__dirname}/public`;
 
-const serveHomePage = function (req, res) {
-  const html = fs.readFileSync(`${STATIC_FOLDER}/home.html`, 'utf8');
-  res.setHeader('Content-Type', 'text/html');
-  res.end(html);
-};
-
 const serveStaticFile = (req, res) => {
-  const path = `${STATIC_FOLDER}${req.url}`;
+  const url = req.url === '/' ? '/home.html' : req.url;
+  const path = `${STATIC_FOLDER}${url}`;
   const stat = fs.existsSync(path) && fs.statSync(path);
-  if (!stat || !stat.isFile()) return getHandlers.defaultHandler(req, res);
+  if (!stat || !stat.isFile()) {
+    next();
+    return;
+  }
   const [, extension] = path.match(/.*\.(.*)$/) || [];
   const contentType = CONTENT_TYPES[extension];
   const html = fs.readFileSync(path);
@@ -49,20 +48,18 @@ const generateComments = function () {
 }
 
 const saveComment = function (req, res) {
-  let data = '';
+  console.log('hello');
+
   const filePath = './data/comments.json'
   const comments = loadComments();
-  req.on('data', (chunk) => data += chunk);
-  req.on('end', () => {
-    const date = new Date();
-    const { comment, name } = querystring.parse(data);
-    comments.unshift({ date, name, comment });
-    fs.writeFileSync(filePath, JSON.stringify(comments), 'utf8');
-    res.setHeader('Content-Type', CONTENT_TYPES.html);
-    res.setHeader('Location', '/guest_book.html');
-    res.statusCode = 301;
-    res.end();
-  });
+  const date = new Date();
+  const { comment, name } = querystring.parse(req.body);
+  comments.unshift({ date, name, comment });
+  fs.writeFileSync(filePath, JSON.stringify(comments), 'utf8');
+  res.setHeader('Content-Type', CONTENT_TYPES.html);
+  res.setHeader('Location', '/guest_book.html');
+  res.statusCode = 301;
+  res.end();
 }
 
 const serveGuestBook = function (req, res) {
@@ -77,27 +74,21 @@ const notFound = function (req, res) {
   res.end('Not Found');
 };
 
-const methodNotAllowed = function (req, res) {
-  res.writeHead(400, 'Method Not Allowed');
-  res.end();
-}
-
-const getHandlers = {
-  '/': serveHomePage,
-  '/guest_book.html': serveGuestBook,
-  'static': serveStaticFile,
-  'defaultHandler': notFound
+const readBody = (request, response, next) => {
+  let body = '';
+  request.on('data', data => (body += data));
+  request.on('end', () => {
+    request.body = body;
+    next();
+  });
 };
 
-const postHandlers = {
-  '/saveComment': saveComment,
-  'defaultHandler': notFound
-};
+const app = new App();
 
-const methods = {
-  GET: getHandlers,
-  POST: postHandlers,
-  NOT_ALLOWED: { defaultHandler: methodNotAllowed }
-}
+app.use(readBody);
+app.get('/guest_book.html', serveGuestBook);
+app.get('', serveStaticFile);
+app.post('/saveComment', saveComment);
+app.use(notFound);
 
-module.exports = { methods };
+module.exports = { app };
