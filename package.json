@@ -1,0 +1,29 @@
+{
+  "name": "flower-catalog-myultimatevision",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib"
+  },
+  "dependencies": {
+    "eslint": "^6.8.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/step-batch-7/flower-catalog-myultimatevision.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/step-batch-7/flower-catalog-myultimatevision/issues"
+  },
+  "homepage": "https://github.com/step-batch-7/flower-catalog-myultimatevision#readme"
+}
