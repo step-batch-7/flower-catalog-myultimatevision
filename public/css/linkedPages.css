@@ -35,11 +35,11 @@ p {
 .commentsBox {
   border-top: 1px solid black;
 }
-.comment {
-  padding: 5px;
-  display: flex;
-  justify-content: space-between;
-}
 .commentsTable {
   width: 100%;
+  text-align: center;
+}
+
+td {
+  width: 33%;
 }

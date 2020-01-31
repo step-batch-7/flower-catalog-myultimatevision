@@ -16,11 +16,10 @@ class App {
     const matchingHandlers = this.routes.filter((route) =>
       matchRoute(route, req));
     const next = function () {
-      if (matchingHandlers.length === 0) {
-        return;
+      if (matchingHandlers) {
+        const router = matchingHandlers.shift();
+        router.handler(req, res, next);
       }
-      const router = matchingHandlers.shift();
-      router.handler(req, res, next);
     };
     next();
   }

@@ -13,7 +13,7 @@ h1 {
   height: 600px;
 }
 #gif {
-  margin-left: 70px;
+  margin-left: 100px;
 }
 .links {
   margin-left: 30px;
@@ -26,6 +26,5 @@ h1 {
   margin-left: 3px;
 }
 .animated_flower {
-  height: 100px;
   width: 100px;
 }

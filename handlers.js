@@ -48,16 +48,22 @@ const generateHtml = function (html, commentDetails) {
 };
 
 const generateComments = function () {
+  const headerHtml =
+    `<tr>
+      <th>Date</th>
+      <th>Name</th>
+      <th>Comment</th>
+     </tr>`;
   const noCommentsHtml = '<h3 style="color:gray;">No comments yet to show<h3>';
   const commentsDetails = loadComments();
   const commentHtml = commentsDetails.reduce(generateHtml, '');
-  return commentHtml || noCommentsHtml;
+  return commentHtml ? `${headerHtml}${commentHtml}` : noCommentsHtml;
 };
 
 const redirectTo = function (res, file) {
   res.setHeader('Content-Type', CONTENT_TYPES.html);
   res.setHeader('Location', file);
-  res.statusCode = 301;
+  res.writeHead(301, 'redirect');
   res.end();
 };
 
@@ -74,12 +80,13 @@ const saveComment = function (req, res) {
 const serveGuestBook = function (req, res) {
   const comments = generateComments();
   const html = loadTemplate('/guest_book.html', { COMMENTS: comments });
+  res.setHeader('content-Type', CONTENT_TYPES.html);
   res.setHeader('content-Length', html.length);
   res.end(html);
 };
 
 const notFound = function (req, res) {
-  res.writeHead(404);
+  res.writeHead(404, 'method not found');
   res.end('Not Found');
 };
 
