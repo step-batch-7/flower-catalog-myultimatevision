@@ -83,6 +83,12 @@
         "no-magic-numbers": "off",
         "max-statements": "off"
       }
+    },
+    {
+      "files": ["config.js"],
+      "rules": {
+        "no-process-env": "off"
+      }
     }
   ]
 }

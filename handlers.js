@@ -3,6 +3,7 @@ const querystring = require('querystring');
 const { App } = require('./app');
 const CONTENT_TYPES = require('./lib/types');
 const { loadTemplate } = require('./lib/viewTemplate');
+const { COMMENTS_PATH } = require('./config');
 
 const STATIC_FOLDER = `${__dirname}/public`;
 
@@ -29,7 +30,7 @@ const serveStaticFile = (req, res, next) => {
 };
 
 const loadComments = function () {
-  const filePath = './data/comments.json';
+  const filePath = COMMENTS_PATH;
   if (fs.existsSync(filePath)) {
     return JSON.parse(fs.readFileSync(filePath, 'utf8') || '[]');
   }
@@ -86,8 +87,13 @@ const serveGuestBook = function (req, res) {
 };
 
 const notFound = function (req, res) {
-  res.writeHead(404, 'method not found');
+  res.writeHead(404, 'page not found');
   res.end('Not Found');
+};
+
+const methodNotAllowed = function (req, res) {
+  res.writeHead(405, 'method not found');
+  res.end('Method Not Found');
 };
 
 const readBody = (request, response, next) => {
@@ -107,6 +113,8 @@ app.use(readBody);
 app.get('/guest_book.html', serveGuestBook);
 app.get('', serveStaticFile);
 app.post('/saveComment', saveComment);
-app.use(notFound);
+app.get('', notFound);
+app.post('', notFound);
+app.use(methodNotAllowed);
 
 module.exports = { app };

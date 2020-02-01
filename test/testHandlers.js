@@ -42,6 +42,7 @@ describe('GET', function () {
         .get('/guest_book.html')
         .set('Accept', '*/*')
         .expect(200)
+        .expect('Content-Length', '678')
         .expect('Content-Type', 'text/html')
         .expect(/Guest book/, done);
     });
@@ -92,5 +93,13 @@ describe('POST', function () {
         .send('name=sai&&comment=good morning')
         .expect(404, done);
     });
+  });
+});
+
+describe('PUT', function () {
+  it('should get mehtod not found', function (done) {
+    request(app.serve.bind(app))
+      .put('/bad')
+      .expect(405, done);
   });
 });

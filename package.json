@@ -14,8 +14,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "export DATA_STORE=test/resource/comments.json;mocha",
+    "start": "export DATA_STORE=data/comments.json;node server.js"
   },
   "repository": {
     "type": "git",
